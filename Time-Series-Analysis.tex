@@ -10,6 +10,8 @@
 \usepackage{ifthen}
 \usepackage[landscape]{geometry}
 \usepackage[colorlinks=true,citecolor=blue,linkcolor=blue]{hyperref}
+\usepackage[colorlinks=true,citecolor=blue,linkcolor=blue]{hyperref}
+\usepackage{graphicx}
 
 
 \ifthenelse{\lengthtest { \paperwidth = 11in}}
@@ -166,6 +168,31 @@ Example: Temperature Data\\
   		$
   		\rho_K = \frac{\gamma_k}{\gamma_0} \approx r_k \rightarrow \frac{c_k}{c_0}
   		$
+  		
+  \item \textbf{Partial Auto Correlation Function (PACF)}\\
+  		For a series of data\\
+  		\textbf{We first start at a point and look backwards:}\\
+  		$
+  		\hat x_{t+h} = \beta_1 x_{t+h-1} + \beta_2 x_{t+h-2} + ... + \beta_{h-1} x_{t+1}\\
+  		$
+  		Note that  $\beta$  is how far away from target variables\\
+  		\includegraphics[width=60mm,scale=1]{images/PACF-1.png}
+  		
+  		\textbf{Then we try looking forwards:}\\
+  		$
+  		x_{t} = \beta_1 x_{t+1} + \beta_2 x_{t+2} + ... + \beta_{h-1} x_{t+h-1}\\
+  		$
+  		Note that  $\beta$  is how far away from target variables\\
+  		\includegraphics[width=60mm,scale=1]{images/PACF-2.png}
+  		
+  		\textbf{Finally we remove the predict and see residual:}\\
+  		$
+  		Corr[(x_{t+h}- \hat x_{t+h}), (x_t - \hat x_t)]
+  		$\\
+  		Therefore, this model measure the correlation with a lag, without accounting for the effect of variables in between.\\
+  		
+  		
+  		Take away: Partial Out a variable, what PACF measures  		
   \item \textbf{Random Walk}\\
   		$
   		X_t = X_{t-1}+Z_t\\

@@ -57,3 +57,7 @@ X.ts <- arima.sim(list(ar = c(0.5,-0.4)), n=1000)
 par(mfrow = c(2,1))
 plot(X.ts, main="AR(2)")
 X.acf = acf(X.ts, main="AR(2) ACF")
+
+
+
+
