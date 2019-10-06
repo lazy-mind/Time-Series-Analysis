@@ -1,0 +1,146 @@
+% style setup
+% -----------------------------------------------------------------------
+\documentclass[10pt,landscape]{article}
+\usepackage{amssymb,amsmath,amsthm,amsfonts}
+\usepackage{multicol,multirow}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[landscape]{geometry}
+\usepackage[colorlinks=true,citecolor=blue,linkcolor=blue]{hyperref}
+
+
+\ifthenelse{\lengthtest { \paperwidth = 11in}}
+    { \geometry{top=.5in,left=.5in,right=.5in,bottom=.5in} }
+	{\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
+		{\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+		{\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+	}
+\pagestyle{empty}
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\small\bfseries}}
+\makeatother
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}
+% -----------------------------------------------------------------------
+% -----------------------------------------------------------------------
+% -----------------------------------------------------------------------
+
+\title{Quick Guide to LaTeX}
+
+\begin{document}
+
+\footnotesize
+
+% -----------------------------------------------------------------------
+% -----------------------------------------------------------------------
+% -----------------------------------------------------------------------
+
+
+
+\begin{center}
+     \Large{\textbf{Time Series Analysis}} \\
+\end{center}
+
+
+
+\section{What is time series}
+A collection of stochastic random variables \textbf{indexed by time}, their stochastic \textbf{distributions are similar but not the same}, the data are \textbf{correlated across time}\\
+In plain words, time series refers to \textbf{a series of data points}, for which they follow some kind of distribution.\\
+\textbf{The goal for studying time series}, is really to investigate in those data points, and try to figure out its \textbf{underlying distribution, and internal correlation} 
+\subsection{Important Characteristics}
+\begin{enumerate}
+	\item Trend
+	\item Seasonality
+	\item Periodicity
+	\item Cyclical Trend
+	\item Heteroskedasticity
+	\item Dependence
+\end{enumerate}
+
+\subsection{Presentation \& Basic Decomposition}
+$Y_t, \text{ in which t indexes time}$\\
+$Y_t = m_t+s_t+x_t$$\ ,\  with : 
+	\\m_t \text{ --- trend component}, 
+	\\s_t \text{ --- seasonal component, seasonality means that it is a periodicity movement, it has a circle of appearance, within the circle, the overall trend should be zero }. 
+	\\x_t \text{ --- stationary component}$\\
+	
+
+
+
+\begin{multicols}{3}
+\setlength{\premulticols}{1pt}
+\setlength{\postmulticols}{1pt}
+\setlength{\multicolsep}{1pt}
+\setlength{\columnsep}{2pt}
+
+	
+\section{Estimate the trend}
+\begin{enumerate}
+	\item Moving Average: \\estimate the trend with a moving window
+	\item Parametric Regression \\ fit in a polynomial regression to estimate
+	\item Non-Parametric Approach
+	\begin{itemize}
+	\item Kernel Regression
+	\item Local Polynomial Regression
+	\item Other Approaches 
+\end{itemize}
+
+\texttt{
+Example: Temperature Data\\
+1. Read the data file in R\\
+2. Visualize the data (Avg Temp)\\
+3. Estimate the trend (Moving Average)\\
+4. Estimate the trend (Parametric)\\
+5. Estimate the trend (Non-Parametric)\\
+6. Comparison
+}
+
+\end{enumerate}
+
+
+\section{Estimate the Seaonality}
+General Approach: estimate and subtract $m_t$ and $s_t$\\
+
+\begin{enumerate}
+	\item Seasonal Average
+			\\ $\hat s_k = w_k - \frac{1}{d}\sum_{j=1}^d w_j$\\
+			\\ $k$: the seasonal group, let's say it has d groups. If the seasonality is monthly, then d = 12
+			\\ $w_k$: the average of all seasonal group value
+			
+	\item Parametric Regression
+
+\texttt{
+Example: Temperature Data\\
+1. Read the data file in R\\
+2. Visualize the data (Avg Temp)\\
+3. Estimate the trend (Moving Average)\\
+4. Estimate the trend (Parametric)\\
+5. Estimate the trend (Non-Parametric)\\
+6. Comparison
+}
+
+\end{enumerate}
+
+\section{Estimate the Stationary}
+
+
+\end{multicols}
+
+
+
+% style end
+% -----------------------------------------------------------------------
+\end{document}
+% -----------------------------------------------------------------------
