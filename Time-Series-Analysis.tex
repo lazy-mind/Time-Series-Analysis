@@ -10,7 +10,6 @@
 \usepackage{ifthen}
 \usepackage[landscape]{geometry}
 \usepackage[colorlinks=true,citecolor=blue,linkcolor=blue]{hyperref}
-\usepackage[colorlinks=true,citecolor=blue,linkcolor=blue]{hyperref}
 \usepackage{graphicx}
 
 
@@ -170,7 +169,7 @@ Example: Temperature Data\\
   		$
   		
   \item \textbf{Partial Auto Correlation Function (PACF)}\\
-  		For a series of data\\
+  		For a series of data, we can do things like:\\
   		\textbf{We first start at a point and look backwards:}\\
   		$
   		\hat x_{t+h} = \beta_1 x_{t+h-1} + \beta_2 x_{t+h-2} + ... + \beta_{h-1} x_{t+1}\\
@@ -234,7 +233,75 @@ Example: Temperature Data\\
 		$
 		
   		
-  \item \textbf{a}
+  \item \textbf{ARMA (q+p) Models}\\
+  		$
+  		X_t Noise + AR+MA\\
+  		X_t = Z_t + \phi_1 X_{t-1} +...+ \phi_p X_{t-p} + \theta_1Z_{t-1}+...+\theta_qZ_{t-q}
+  		$
+  		In terms of back function, we have:\\
+  		$
+  		AR: \phi(B)X_t = X_t - \phi_1X_{t-1}-...-\phi_pX_{t-p} \\ 		
+  		MA: \theta(B)Z_t = Z_t + \theta_1Z_{t-1} +...+ \theta_qZ_{t-q}\\
+  		ARMA: \theta(B)Z_t = \phi(B)X_t
+  		$\\
+  		
+  		The goal of backward shift function is to transform a mix process to MA process:\\
+  		$
+  		\frac{\theta(B)}{\phi(B)}Z_t = X_t \ ;\ or\ :\ \frac{\phi(B)}{\theta(B)}Z_t = Z_t
+  		$\\
+  		
+  		We can solve by geometric Series Transformation
+  		
+  \item \textbf{ARIMA (q+p) Models}\\
+  		From ARMA\\
+  		$
+  		ARMA\\
+  		X_t = Z_t + \phi_1 X_{t-1} +...+ \phi_p X_{t-p} + \theta_1Z_{t-1}+...+\theta_qZ_{t-q}\\
+  		\theta(B)Z_t = \phi(B)X_t
+  		$\\
+  		we expect $\beta(z)$ and $\phi(z)$ have all roots lie outside unit circle, z is a complex number. Such that ARMA(q,p) is stationary and invertible\\
+  		
+  		We loose the stationary constraint, introduce difference operator $\nabla$:\\
+  		$
+  		\nabla X_t = X_t - X_{t-1} = (1-B)X_t\\
+  		\text{for random walk: }X_t = X_{t-1} + Z_t  \equiv \nabla X_t = Z_t 
+  		$\\
+  		
+  		Then we define ARIMA(p,d,q) process:\\
+  		$
+  		X_t \rightarrow s.t. \rightarrow Y_t = \nabla^d X_t = (1-B)^d
+X_t \text{ is ARMA(p,q)}\\
+		\newline
+		ARIMA: \phi(B)\nabla^dX_t  = \beta(B)Z_t	\\
+		or:\phi(B)(1-B)^dX_t = \beta(B)Z_t	
+		$\\
+  		
+  		ARIMA is a process, when trend is removed, be ARMA\\
+  		d: order of differencing, usually =1 or =2\\
+  		over differencing may introduce dependence, and we decide whether differencing is needed by looking at ACF (when there is a slow decay)
+  
+  \item \textbf{SARIMA Processes: Seasonality}\\
+  		First we look at the seasonal ARMA process:\\
+  		$
+  		ARMA(P,Q)_s: \Phi_P(B^s)X_t = \Theta_Q(B^s)Z, with:\\
+  		\Phi_P(B^s) = 1 - \Phi_1B^s - \Phi_2B^{2s} - ... - \Phi_PB^{Ps}\\
+  		\Theta_Q(B^s) = 1+ \Theta_1B^{s} + + \Theta_2B^{2s} + ... + + \Theta_QB^{Qs}\\
+  		$
+  		
+  		Then we look at the seasonal ARIMA Process:\\
+  		$
+  		SARIMA(p,d,q,P,D,Q)_s :\\
+  		\Phi_P(B^{S})\phi_p(B)(1-B^S)^D(1-B)^dX_t = \Theta_Q(B^S)\theta_q(B)Z_t\\
+  		\newline
+  		\Phi_P(B^s) = 1 - \Phi_1B^s - \Phi_2B^{2s} - ... - \Phi_PB^{Ps}\\
+  		\phi_p(B) = 1 - \phi_1B - \phi_2B^{2} - ... - \phi_PB^{p}\\
+  		\Theta_Q(B^s) = 1+ \Theta_1B^{s} + + \Theta_2B^{2s} + ... + + \Theta_QB^{Qs}\\
+  		\theta_q(B) = 1+ \theta_1B + + \theta_2B^{2} + ... + + \theta_QB^{q}\\
+  		$
+  		In which the capital terms are seasonal part\\
+  		\newline
+  		Now we look at the ACF of SARIMA:\\
+  		
   		
   \item \textbf{Strict Stationary}\\
 		Definition: shifted distribution is the same:\\
@@ -301,9 +368,62 @@ Example: Temperature Data\\
   		
   \item \textbf{Yule-Walker Equations}\\
   		A set of Difference Equations, that governs AR's ACF\\
+  		It is useful in estimating AR's parameters:\\
+  		$
+  		1. \text{ AR(p)}: \\X_t = \phi_0 + \phi_1 x_{t-1} + \phi_2 x_{t-2} +...+\phi_p x_{t-p} + Z_t\\
+  		\newline
+  		2. \text{ Expectation Form}: \\ \mu = \phi_0+\phi_1 \mu +\phi_2 \mu + ... + \phi_p \mu + 0\\
+  		\newline
+  		3. \text{ Subtract and redefine variable}:\\
+  			X_t - \mu = 0 + \phi_1(x_{t-1}-\mu) + ... + \phi_p(x_{t-p}-\mu) + Z_t\\
+  			\sim x_t  = x_t - \mu \ ;\ E[\sim x_t = 0]\\
+  			\sim x_t  = \phi_1 \sim x_{t-1} + \phi_2 \sim x_{t-2} + ... + \phi_p \sim x_{t-p} + Z_t\\
+  		\newline	
+  		4. \text{ Since the new process is stationary}\\
+  		\text{its ACF follows the Yule-Walker Equation:}\\
+  			\rho(k) = \phi_1 \rho(k-1) + \phi_2 \rho(k-2)+ ... +\phi_p \rho(k-p)\\
+  		\newline	
+  		5. \text{ fitting in k = 1,2,...p and since }\rho(k) = \rho(-k)\\
+  			\text{this gives us a matrix form, }\\
+  			\text{ we can use sample to solve and estimate all the }\Phi
+  		$
   		
-  \item \textbf{a}\\
-  \item \textbf{a}\\
+  \item \textbf{Akaike Information Criterion (AIC)}\\
+  		This is measuring whether a model is good enough, we can see it as some sort of scores for deciding which model to explain the data\\
+  \item \textbf{Q-Statistics}\\
+  		Original Q statistics:\\
+  		$
+  		Q^*(m) = T\sum{l=1}^m r_l^2\\
+  		\text{for null hypothesis: } H_0: \rho_1 = \rho_2 = ... = \rho_m = 0\\
+  		\text{alternative hypothesis: } H_1: some \rho_i \neq 0\\
+  		$
+  		when $r_t$ is i.i.d:\\
+  		$
+  		Q^*(m) \sim \chi^2(df = m)
+  		$\\
+  		
+  		Ljung and Box Q statistics:\\
+  		$
+  		Q(m) = T(T+2)\sum_{l=1}^m \frac{r_l^2}{T-l}
+  		$
+  		reject null hypothesis, when:\\
+  		$
+  		Q(m)>\chi^2_\alpha
+  		$\\
+  		
+  		usually: we use $m \approx log(T)$
+  		
+  		
+  \item \textbf{Putting it all together:}\\
+  		1. Trend: there is a trend, we may want differencing\\
+  		2. Variation of variance: transformation is needed, such as log transformation\\
+  		3. ACF: tells us the order of MA\\
+  		4. PACF: tells us the order of AR\\
+  		5. AIC: tells us which model seems to be better, but remember to consider whether it is worthy to introduce the complexity\\
+  		6. SSE:\\
+  		7. Ljung-Box Q-statistics\\
+  		8. Estimation
+  \item 
 \end{enumerate}
 
 \end{multicols}
